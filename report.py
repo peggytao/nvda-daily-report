@@ -1,102 +1,74 @@
 import yfinance as yf
-import requests
-import os
+import feedparser
 from datetime import datetime
-from openai import OpenAI
 
-# Initialize OpenAI client
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-# 1️⃣ Fetch NVDA data
+# 1️⃣ Fetch NVDA stock data
 ticker = yf.Ticker("NVDA")
-hist = ticker.history(period="1d")
-
+hist = ticker.history(period="60d")  # last 60 days
 price = hist["Close"].iloc[-1]
-info = ticker.info
+pe_ratio = ticker.info.get("trailingPE", None)
+eps = ticker.info.get("trailingEps", None)
+market_cap = ticker.info.get("marketCap", None)
 
-pe_ratio = info.get("trailingPE", "N/A")
-market_cap = info.get("marketCap", "N/A")
-eps = info.get("trailingEps", "N/A")
+# 2️⃣ Simple moving averages (MA20 and MA50)
+ma20 = hist["Close"].rolling(window=20).mean().iloc[-1]
+ma50 = hist["Close"].rolling(window=50).mean().iloc[-1]
 
-# 2️⃣ Get recent news headlines
-news_items = ticker.news[:5]
-headlines = []
+# 3️⃣ Rule-based recommendation
+recommendation = "HOLD"
+reason = ""
 
-for item in news_items:
-    headlines.append(item.get("title", ""))
+if price > ma20 and price > ma50 and pe_ratio and pe_ratio < 50:
+    recommendation = "BUY"
+    reason = "Price above MA20 and MA50; valuation reasonable."
+elif price < ma20 or price < ma50 or (pe_ratio and pe_ratio > 60):
+    recommendation = "SELL"
+    reason = "Price below moving averages or overvalued."
+else:
+    recommendation = "HOLD"
+    reason = "Mixed signals; maintain current position."
 
-news_text = "\n".join(headlines)
+# 4️⃣ Fetch latest news from RSS (Yahoo Finance)
+rss_url = "https://finance.yahoo.com/rss/headline?s=NVDA"
+feed = feedparser.parse(rss_url)
+headlines = [entry.title for entry in feed.entries[:5]]
 
-# 3️⃣ Ask AI for analysis
-prompt = f"""
-You are a professional financial analyst.
-
-Analyze NVIDIA (NVDA) using the following data:
-
-Price: {price}
-PE Ratio: {pe_ratio}
-EPS: {eps}
-Market Cap: {market_cap}
-
-Recent News Headlines:
-{news_text}
-
-Provide:
-1. Short professional analysis (3-5 paragraphs)
-2. Clear final recommendation: BUY, HOLD, or SELL
-3. Confidence level (Low / Moderate / High)
-
-Be objective and balanced.
-"""
-
-response = client.chat.completions.create(
-    model="gpt-4o-mini",
-    messages=[{"role": "user", "content": prompt}],
-    temperature=0.4,
-)
-
-analysis = response.choices[0].message.content
-
-# 4️⃣ Generate HTML
+# 5️⃣ Generate HTML report
 today = datetime.now().strftime("%Y-%m-%d")
-
 html_content = f"""
 <!DOCTYPE html>
 <html>
 <head>
-<title>NVDA Daily AI Report</title>
+<title>NVDA Daily Report</title>
 <style>
-body {{
-    font-family: Arial, sans-serif;
-    margin: 40px;
-    background-color: #f4f6f8;
-}}
-.card {{
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}}
+body {{ font-family: Arial; background:#f4f6f9; margin:20px; }}
+.card {{ background:white; padding:20px; border-radius:12px; margin-bottom:20px; }}
+.recommendation {{ font-size:28px; font-weight:bold; margin-top:15px; }}
+.buy {{ color:green; }}
+.hold {{ color:orange; }}
+.sell {{ color:red; }}
 </style>
 </head>
 <body>
 <div class="card">
-<h1>NVDA Daily AI Stock Report</h1>
-<p><strong>Date:</strong> {today}</p>
-
-<h2>Market Data</h2>
+<h1>NVDA Daily Report - {today}</h1>
 <p><strong>Price:</strong> ${price:.2f}</p>
 <p><strong>PE Ratio:</strong> {pe_ratio}</p>
 <p><strong>EPS:</strong> {eps}</p>
 <p><strong>Market Cap:</strong> {market_cap}</p>
-
-<h2>AI Analysis</h2>
-<p>{analysis.replace(chr(10), "<br>")}</p>
-
-<hr>
-<p style="font-size:12px;">
-Disclaimer: This AI-generated report is for educational purposes only and does not constitute financial advice.
-</p>
+<div class="recommendation {recommendation.lower()}">
+Recommendation: {recommendation}
+</div>
+<p>{reason}</p>
+</div>
+<div class="card">
+<h2>Latest News</h2>
+<ul>
+{''.join([f'<li>{h}</li>' for h in headlines])}
+</ul>
+</div>
+<div class="card" style="font-size:12px;">
+Disclaimer: This is an automated report for educational purposes only.
 </div>
 </body>
 </html>
@@ -105,4 +77,4 @@ Disclaimer: This AI-generated report is for educational purposes only and does n
 with open("index.html", "w", encoding="utf-8") as f:
     f.write(html_content)
 
-print("AI-powered NVDA report generated successfully.")
+print("NVDA free daily report generated successfully.")
