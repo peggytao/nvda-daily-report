@@ -31,4 +31,7 @@ jobs:
         git config --global user.email "actions@github.com"
         git add index.html
         git commit -m "Daily NVDA update" || echo "No changes"
-        git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+        git push origin HEAD:main
+      env:
+        # GitHub automatically provides this secret
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
