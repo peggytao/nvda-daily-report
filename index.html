@@ -4,141 +4,73 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NVDA Daily AI Stock Report</title>
-
 <style>
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background: #f4f6f9;
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    margin: 20px;
 }
-
-.container {
-    max-width: 900px;
-    margin: auto;
-}
-
 .card {
     background: white;
-    padding: 30px;
+    padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    margin-bottom: 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
 }
-
-h1 {
-    margin-top: 0;
+h1, h2, h3 {
+    margin: 0 0 10px 0;
 }
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-top: 15px;
-}
-
 .metric {
-    background: #f8fafc;
-    padding: 15px;
-    border-radius: 10px;
+    margin-bottom: 10px;
 }
-
-.metric h3 {
-    margin: 0;
-    font-size: 14px;
-    color: #666;
-}
-
-.metric p {
-    font-size: 20px;
-    font-weight: bold;
-    margin: 5px 0 0 0;
-}
-
 .recommendation {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: bold;
+    padding: 10px;
+    border-radius: 8px;
     text-align: center;
-    padding: 15px;
-    border-radius: 10px;
     margin-top: 15px;
 }
-
-.buy {
-    background-color: #e6f9ec;
-    color: #0a8a34;
-}
-
-.hold {
-    background-color: #fff7e6;
-    color: #b7791f;
-}
-
-.sell {
-    background-color: #fde8e8;
-    color: #c53030;
-}
-
+.buy { background-color: #e6f9ec; color: #0a8a34; }
+.hold { background-color: #fff7e6; color: #b7791f; }
+.sell { background-color: #fde8e8; color: #c53030; }
 .analysis-text {
-    line-height: 1.6;
     margin-top: 10px;
+    line-height: 1.6;
 }
-
 .footer {
     font-size: 12px;
     color: #888;
     text-align: center;
-    margin-top: 40px;
+    margin-top: 30px;
 }
 </style>
 </head>
-
 <body>
 
-<div class="container">
+<div class="card">
+<h1>NVDA Daily AI Stock Report</h1>
+<p><strong>Date:</strong> {{DATE}}</p>
 
-    <div class="card">
-        <h1>NVDA Daily AI Stock Report</h1>
-        <p><strong>Date:</strong> {{DATE}}</p>
+<div class="metric"><strong>Price:</strong> ${{PRICE}}</div>
+<div class="metric"><strong>PE Ratio:</strong> {{PE_RATIO}}</div>
+<div class="metric"><strong>EPS:</strong> {{EPS}}</div>
+<div class="metric"><strong>Market Cap:</strong> {{MARKET_CAP}}</div>
 
-        <div class="grid">
-            <div class="metric">
-                <h3>Price</h3>
-                <p>${{PRICE}}</p>
-            </div>
+<div class="recommendation {{REC_CLASS}}">
+{{RECOMMENDATION}}
+</div>
+</div>
 
-            <div class="metric">
-                <h3>PE Ratio</h3>
-                <p>{{PE_RATIO}}</p>
-            </div>
+<div class="card">
+<h2>AI Analysis</h2>
+<div class="analysis-text">
+{{ANALYSIS}}
+</div>
+</div>
 
-            <div class="metric">
-                <h3>EPS</h3>
-                <p>{{EPS}}</p>
-            </div>
-
-            <div class="metric">
-                <h3>Market Cap</h3>
-                <p>{{MARKET_CAP}}</p>
-            </div>
-        </div>
-
-        <div class="recommendation {{REC_CLASS}}">
-            {{RECOMMENDATION}}
-        </div>
-    </div>
-
-    <div class="card">
-        <h2>AI Analysis</h2>
-        <div class="analysis-text">
-            {{ANALYSIS}}
-        </div>
-    </div>
-
-    <div class="footer">
-        Disclaimer: This AI-generated report is for educational purposes only and does not constitute financial advice.
-    </div>
-
+<div class="footer">
+Disclaimer: This report is automatically generated for educational purposes only and does not constitute financial advice.
 </div>
 
 </body>
