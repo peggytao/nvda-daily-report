@@ -35,6 +35,3 @@ jobs:
         git add index.html
         git commit -m "Daily NVDA update" || echo "No changes"
         git push
-      env:
-        # GitHub automatically provides this secret
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
