@@ -87,7 +87,7 @@ h1, h2 {{ margin:0 0 10px 0; }}
 
 <div class=\"card\">
 <h1>NVDA Daily Stock Report</h1>
-<p><strong>Date:</strong> {today}</p>
+<p><strong>Date:</strong> <span id="report-date">{today}</span></p>
 <div class=\"metric\"><strong>Price:</strong> {snapshot['price']}</div>
 <div class=\"metric\"><strong>PE Ratio:</strong> {snapshot['pe_ratio']}</div>
 <div class=\"metric\"><strong>EPS:</strong> {snapshot['eps']}</div>
@@ -104,6 +104,13 @@ h1, h2 {{ margin:0 0 10px 0; }}
 <div class=\"footer\">
 Disclaimer: This report is automatically generated for educational purposes only and does not constitute financial advice.
 </div>
+
+<script>
+const dateEl = document.getElementById("report-date");
+if (dateEl) {{
+  dateEl.textContent = new Date().toISOString().slice(0, 10);
+}}
+</script>
 
 </body>
 </html>
