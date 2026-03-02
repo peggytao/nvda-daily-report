@@ -3,75 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NVDA Daily AI Stock Report</title>
+<title>NVDA Daily Report</title>
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f9;
-    margin: 20px;
-}
-.card {
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-}
-h1, h2, h3 {
-    margin: 0 0 10px 0;
-}
-.metric {
-    margin-bottom: 10px;
-}
-.recommendation {
-    font-size: 28px;
-    font-weight: bold;
-    padding: 10px;
-    border-radius: 8px;
-    text-align: center;
-    margin-top: 15px;
-}
+body { font-family: Arial; background:#f4f6f9; margin:20px; }
+.card { background:white; padding:25px; border-radius:12px; margin-bottom:20px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); }
+h1, h2 { margin:0 0 10px 0; }
+.metric { margin-bottom:10px; }
+.recommendation { font-size:28px; font-weight:bold; padding:10px; border-radius:8px; text-align:center; margin-top:15px; }
 .buy { background-color: #e6f9ec; color: #0a8a34; }
 .hold { background-color: #fff7e6; color: #b7791f; }
 .sell { background-color: #fde8e8; color: #c53030; }
-.analysis-text {
-    margin-top: 10px;
-    line-height: 1.6;
-}
-.footer {
-    font-size: 12px;
-    color: #888;
-    text-align: center;
-    margin-top: 30px;
-}
+.analysis-text { margin-top:10px; line-height:1.6; white-space: pre-line; }
+.footer { font-size:12px; color:#666; text-align:center; margin-top:30px; }
 </style>
 </head>
 <body>
 
 <div class="card">
-<h1>NVDA Daily AI Stock Report</h1>
-<p><strong>Date:</strong> {{DATE}}</p>
-
-<div class="metric"><strong>Price:</strong> ${{PRICE}}</div>
-<div class="metric"><strong>PE Ratio:</strong> {{PE_RATIO}}</div>
-<div class="metric"><strong>EPS:</strong> {{EPS}}</div>
-<div class="metric"><strong>Market Cap:</strong> {{MARKET_CAP}}</div>
-
-<div class="recommendation {{REC_CLASS}}">
-{{RECOMMENDATION}}
-</div>
+<h1>NVDA Daily Stock Report</h1>
+<p><strong>Date:</strong> 2026-03-02</p>
+<div class="metric"><strong>Price:</strong> N/A</div>
+<div class="metric"><strong>PE Ratio:</strong> N/A</div>
+<div class="metric"><strong>EPS:</strong> N/A</div>
+<div class="metric"><strong>Market Cap:</strong> N/A</div>
+<div class="recommendation hold">HOLD</div>
+<p>Live market data is being refreshed. Please check back shortly.</p>
 </div>
 
 <div class="card">
-<h2>AI Analysis</h2>
-<div class="analysis-text">
-{{ANALYSIS}}
+<h2>Latest News</h2>
+<div class="analysis-text">No headlines available right now.</div>
 </div>
-</div>
-
-<div class="footer">
-Disclaimer: This report is automatically generated for educational purposes only and does not constitute financial advice.
-</div>
-
+<div class="footer">Disclaimer: This report is automatically generated for educational purposes only and does not constitute financial advice.</div>
 </body>
 </html>
