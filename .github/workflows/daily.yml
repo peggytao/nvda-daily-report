@@ -2,8 +2,8 @@ name: Daily NVDA Report
 
 on:
   schedule:
-    - cron: '0 13 * * *'   # Runs daily at 13:00 UTC (9AM EST)
-  workflow_dispatch:       # Allows manual run
+    - cron: '0 13 * * *'  # daily
+  workflow_dispatch:
 
 permissions: 
   contents: write
@@ -25,10 +25,9 @@ jobs:
         python-version: '3.10'
 
     - name: Install dependencies
-      run: |
-        pip install yfinance feedparser
+      run: pip install yfinance feedparser
 
-    - name: Run report script
+    - name: Generate HTML
       run: python report.py
 
     - name: Commit updated report
