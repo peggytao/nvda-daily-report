@@ -1,6 +1,9 @@
 name: Daily NVDA Report
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: '0 13 * * *'  # daily
   workflow_dispatch:
@@ -16,19 +19,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.2.2
       with:
+        ref: main
         persist-credentials: true   # ensures GITHUB_TOKEN can push
         fetch-depth: 0             # full history for commits
 
     - name: Set up Python
       run: python3 --version
-
-    - name: Sync with remote gh-pages
-      run: |
-        if git ls-remote --exit-code --heads origin gh-pages; then
-          git checkout -B gh-pages origin/gh-pages
-        else
-          git checkout -B gh-pages
-        fi
 
     - name: Install dependencies
       run: pip install yfinance feedparser
@@ -42,4 +38,4 @@ jobs:
         git config --global user.email "actions@github.com"
         git add index.html report/index.html
         git commit -m "Daily NVDA update" || echo "No changes"
-        git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:gh-pages
+        git push https://${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:main
