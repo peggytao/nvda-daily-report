@@ -20,7 +20,7 @@ h1, h2 { margin:0 0 10px 0; }
 <body>
 <div class="card">
 <h1>NVDA Daily Stock Report</h1>
-<p><strong>Date:</strong> 2026-03-02</p>
+<p><strong>Date:</strong> <span id="report-date">2026-03-02</span></p>
 <div class="metric"><strong>Price:</strong> N/A</div>
 <div class="metric"><strong>PE Ratio:</strong> N/A</div>
 <div class="metric"><strong>EPS:</strong> N/A</div>
@@ -33,5 +33,11 @@ h1, h2 { margin:0 0 10px 0; }
 <div class="analysis-text">No headlines available right now.</div>
 </div>
 <div class="footer">Disclaimer: This report is automatically generated for educational purposes only and does not constitute financial advice.</div>
+<script>
+const dateEl = document.getElementById("report-date");
+if (dateEl) {
+  dateEl.textContent = new Date().toISOString().slice(0, 10);
+}
+</script>
 </body>
 </html>
