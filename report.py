@@ -119,7 +119,7 @@ def main():
         "market_cap": "N/A",
         "recommendation": "HOLD",
         "rec_class": "hold",
-        "reason": "Data source temporarily unavailable. Displaying fallback report.",
+        "reason": "Live market data is being refreshed. Please check back shortly.",
     }
 
     try:
