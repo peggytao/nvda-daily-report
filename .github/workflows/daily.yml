@@ -22,6 +22,14 @@ jobs:
     - name: Set up Python
       run: python3 --version
 
+    - name: Sync with remote gh-pages
+      run: |
+        if git ls-remote --exit-code --heads origin gh-pages; then
+          git checkout -B gh-pages origin/gh-pages
+        else
+          git checkout -B gh-pages
+        fi
+
     - name: Install dependencies
       run: pip install yfinance feedparser
 
