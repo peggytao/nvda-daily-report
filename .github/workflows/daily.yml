@@ -5,13 +5,16 @@ on:
     - cron: '0 13 * * *'   # Runs daily at 13:00 UTC (9AM EST)
   workflow_dispatch:       # Allows manual run
 
+permissions: 
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         persist-credentials: true   # ensures GITHUB_TOKEN can push
         fetch-depth: 0             # full history for commits
